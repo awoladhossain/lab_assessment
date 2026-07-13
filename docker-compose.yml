@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: appifylab-postgres-db
+    restart: always
+    ports:
+      - "5434:5432" # Maps container 5432 to host 5434 to match local development settings
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: appifylab_feed
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d appifylab_feed"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: appifylab-backend-api
+    restart: always
+    ports:
+      - "5050:5050"
+    environment:
+      - PORT=5050
+      # Uses the docker service name "db" as the hostname
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/appifylab_feed?schema=public
+      - JWT_SECRET=appifylab_secret_key_super_secure_987654321
+      - FRONTEND_URL=http://localhost:3000
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
