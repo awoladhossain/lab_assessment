@@ -1,51 +1,53 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { useAuth } from "../context/AuthContext";
-import { useRouter } from "next/navigation";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 export default function RegisterPage() {
   const { register, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [error, setError] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+  const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
-      router.push("/");
+      router.push('/');
     }
   }, [isAuthenticated, isLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firstName || !lastName || !email || !password || !repeatPassword) {
-      setError("Please fill in all fields.");
+      setError('Please fill in all fields.');
       return;
     }
     if (password !== repeatPassword) {
-      setError("Passwords do not match.");
+      setError('Passwords do not match.');
       return;
     }
-    setError("");
+    setError('');
     setIsSubmitting(true);
     try {
       await register(firstName, lastName, email, password);
     } catch (err: any) {
-      setError(err.message || "Registration failed.");
+      setError(err.message || 'Registration failed.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleGoogleRegister = () => {
-    alert("Google registration is not implemented. Please use standard email and password registration.");
+    alert(
+      'Google registration is not implemented. Please use standard email and password registration.',
+    );
   };
 
   if (isLoading) {
@@ -66,11 +68,19 @@ export default function RegisterPage() {
       </div>
       <div className="_shape_two">
         <img src="/assets/images/shape2.svg" alt="" className="_shape_img" />
-        <img src="/assets/images/dark_shape1.svg" alt="" className="_dark_shape _dark_shape_opacity" />
+        <img
+          src="/assets/images/dark_shape1.svg"
+          alt=""
+          className="_dark_shape _dark_shape_opacity"
+        />
       </div>
       <div className="_shape_three">
         <img src="/assets/images/shape3.svg" alt="" className="_shape_img" />
-        <img src="/assets/images/dark_shape2.svg" alt="" className="_dark_shape _dark_shape_opacity" />
+        <img
+          src="/assets/images/dark_shape2.svg"
+          alt=""
+          className="_dark_shape _dark_shape_opacity"
+        />
       </div>
       <div className="_social_registration_wrap">
         <div className="container">
@@ -92,22 +102,22 @@ export default function RegisterPage() {
                 </div>
                 <p className="_social_registration_content_para _mar_b8">Get Started Now</p>
                 <h4 className="_social_registration_content_title _titl4 _mar_b50">Registration</h4>
-                
+
                 {error && (
                   <div className="alert alert-danger py-2 px-3 mb-4 fs-6" role="alert">
                     {error}
                   </div>
                 )}
 
-                <button 
-                  type="button" 
-                  onClick={handleGoogleRegister} 
+                <button
+                  type="button"
+                  onClick={handleGoogleRegister}
                   className="_social_registration_content_btn _mar_b40"
                 >
-                  <img src="/assets/images/google.svg" alt="Image" className="_google_img" /> 
+                  <img src="/assets/images/google.svg" alt="Image" className="_google_img" />
                   <span>Register with google</span>
                 </button>
-                <div className="_social_registration_content_bottom_txt _mar_b40"> 
+                <div className="_social_registration_content_bottom_txt _mar_b40">
                   <span>Or</span>
                 </div>
                 <form className="_social_registration_form" onSubmit={handleSubmit}>
@@ -115,8 +125,8 @@ export default function RegisterPage() {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="_social_registration_form_input _mar_b14">
                         <label className="_social_registration_label _mar_b8">First Name</label>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
                           className="form-control _social_registration_input"
@@ -128,8 +138,8 @@ export default function RegisterPage() {
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                       <div className="_social_registration_form_input _mar_b14">
                         <label className="_social_registration_label _mar_b8">Last Name</label>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
                           className="form-control _social_registration_input"
@@ -141,8 +151,8 @@ export default function RegisterPage() {
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="_social_registration_form_input _mar_b14">
                         <label className="_social_registration_label _mar_b8">Email</label>
-                        <input 
-                          type="email" 
+                        <input
+                          type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           className="form-control _social_registration_input"
@@ -154,8 +164,8 @@ export default function RegisterPage() {
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="_social_registration_form_input _mar_b14">
                         <label className="_social_registration_label _mar_b8">Password</label>
-                        <input 
-                          type="password" 
+                        <input
+                          type="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           className="form-control _social_registration_input"
@@ -166,9 +176,11 @@ export default function RegisterPage() {
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="_social_registration_form_input _mar_b14">
-                        <label className="_social_registration_label _mar_b8">Repeat Password</label>
-                        <input 
-                          type="password" 
+                        <label className="_social_registration_label _mar_b8">
+                          Repeat Password
+                        </label>
+                        <input
+                          type="password"
                           value={repeatPassword}
                           onChange={(e) => setRepeatPassword(e.target.value)}
                           className="form-control _social_registration_input"
@@ -181,14 +193,17 @@ export default function RegisterPage() {
                   <div className="row">
                     <div className="col-lg-12 col-xl-12 col-md-12 col-sm-12">
                       <div className="form-check _social_registration_form_check">
-                        <input 
-                          className="form-check-input _social_registration_form_check_input" 
-                          type="checkbox" 
-                          id="termsCheck" 
-                          defaultChecked 
+                        <input
+                          className="form-check-input _social_registration_form_check_input"
+                          type="checkbox"
+                          id="termsCheck"
+                          defaultChecked
                           required
                         />
-                        <label className="form-check-label _social_registration_form_check_label" htmlFor="termsCheck">
+                        <label
+                          className="form-check-label _social_registration_form_check_label"
+                          htmlFor="termsCheck"
+                        >
                           I agree to terms & conditions
                         </label>
                       </div>
@@ -197,12 +212,12 @@ export default function RegisterPage() {
                   <div className="row">
                     <div className="col-lg-12 col-md-12 col-xl-12 col-sm-12">
                       <div className="_social_registration_form_btn _mar_t40 _mar_b60">
-                        <button 
-                          type="submit" 
-                          disabled={isSubmitting} 
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
                           className="_social_registration_form_btn_link _btn1"
                         >
-                          {isSubmitting ? "Registering..." : "Register now"}
+                          {isSubmitting ? 'Registering...' : 'Register now'}
                         </button>
                       </div>
                     </div>

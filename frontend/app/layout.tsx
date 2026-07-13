@@ -1,22 +1,22 @@
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
-import "./globals.css";
-import "./styles/bootstrap.min.css";
-import "./styles/common.css";
-import "./styles/main.css";
-import "./styles/responsive.css";
-import { AuthProvider } from "./context/AuthContext";
+import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';
+import { AuthProvider } from './context/AuthContext';
+import './globals.css';
+import './styles/bootstrap.min.css';
+import './styles/common.css';
+import './styles/main.css';
+import './styles/responsive.css';
 
 const poppins = Poppins({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
-  variable: "--font-poppins",
-  display: "swap",
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-poppins',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: "Buddy Script",
-  description: "A Next.js Social Media Frontend integrated with Node.js backend",
+  title: 'Buddy Script',
+  description: 'A Next.js Social Media Frontend integrated with Node.js backend',
 };
 
 export default function RootLayout({
@@ -27,9 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

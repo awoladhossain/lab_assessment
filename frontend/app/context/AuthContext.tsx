@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { apiRequest, User } from "../utils/api";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from 'next/navigation';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { apiRequest, User } from '../utils/api';
 
 interface AuthContextType {
   user: User | null;
@@ -25,20 +25,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     async function checkAuth() {
-      const storedToken = localStorage.getItem("auth_token");
+      const storedToken = localStorage.getItem('auth_token');
       if (storedToken) {
         setToken(storedToken);
         try {
-          const response = await apiRequest<{ user: User }>("auth/me", {
+          const response = await apiRequest<{ user: User }>('auth/me', {
             headers: {
               Authorization: `Bearer ${storedToken}`,
             },
           });
           setUser(response.user);
-
         } catch (error) {
-          console.error("Token verification failed:", error);
-          localStorage.removeItem("auth_token");
+          console.error('Token verification failed:', error);
+          localStorage.removeItem('auth_token');
           setToken(null);
           setUser(null);
         }
@@ -51,15 +50,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const response = await apiRequest<{ token: string; user: User }>("auth/login", {
-        method: "POST",
+      const response = await apiRequest<{ token: string; user: User }>('auth/login', {
+        method: 'POST',
         body: JSON.stringify({ email, password }),
       });
-      
-      localStorage.setItem("auth_token", response.token);
+
+      localStorage.setItem('auth_token', response.token);
       setToken(response.token);
       setUser(response.user);
-      router.push("/");
+      router.push('/');
     } catch (error) {
       setIsLoading(false);
       throw error;
@@ -71,15 +70,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const register = async (firstName: string, lastName: string, email: string, password: string) => {
     setIsLoading(true);
     try {
-      const response = await apiRequest<{ token: string; user: User }>("auth/register", {
-        method: "POST",
+      const response = await apiRequest<{ token: string; user: User }>('auth/register', {
+        method: 'POST',
         body: JSON.stringify({ firstName, lastName, email, password }),
       });
-      
-      localStorage.setItem("auth_token", response.token);
+
+      localStorage.setItem('auth_token', response.token);
       setToken(response.token);
       setUser(response.user);
-      router.push("/");
+      router.push('/');
     } catch (error) {
       setIsLoading(false);
       throw error;
@@ -89,10 +88,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    localStorage.removeItem("auth_token");
+    localStorage.removeItem('auth_token');
     setToken(null);
     setUser(null);
-    router.push("/login");
+    router.push('/login');
   };
 
   const value = {
@@ -111,7 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 }
